@@ -1,0 +1,32 @@
+*{
+    padding:0;
+    margin: 0;
+}
+
+body{
+    width:100%;
+    min-height: 100vh;
+}
+
+.page{
+    min-height: 100vh;
+}
+
+.image{
+    width: 250px;
+}
+
+.entry-menu{
+    top:0;
+    width:100%;
+    min-height: 100vh;
+    background-color: hsla(0, 0%, 0%, 0.263);
+}
+
+.entry-creator{
+    height: 300px;
+}
+
+#Entries{
+    max-height:300px;
+}
