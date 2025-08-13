@@ -69,8 +69,8 @@ function updateTotal(value, type){
     }
 
     console.log(money, currentCurrency);
-    
-    display.innerHTML = `${symbol}${money.toFixed(2)*exchangeRate.toFixed(2)}`;
+    const displayMoney = `${symbol}${(money*exchangeRate).toFixed(2)}`
+    display.innerHTML = displayMoney;//doesnt work properly more work needed
 
     displayEntries();
 }
