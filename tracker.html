@@ -61,23 +61,23 @@
             <div id="Entries" class="row overflow-y-scroll py-3">
             </div>
         </div>
-        <button id="changeCurrencyBtn" onclick="changeCurrency();">Change Currency</button>
+        <button class="btn btn-primary p-1" id="changeCurrencyBtn" onclick="changeCurrency();">Change Currency</button>
     </main>
 
     <div class="container-fluid entry-menu position-absolute d-none justify-content-center align-items-center">
-        <div class="col-10 col-md-6 bg-primary entry-creator p-1">
-            <div class="row">
-                <input type="number" class="col-6 mx-auto" id="amount" placeholder="Enter Amount">
+        <div class="col-10 col-md-6 bg-light entry-creator p-1 rounded position-relative">
+            <div class="row mt-2">
+                <input type="number" name="amount" class="col-6 mx-auto" id="amount" placeholder="Enter Amount" required>
+            </div>
+            <div class="row mt-2">
+                <input type="text" name="reason" class="col-6 mx-auto" id="reason" placeholder="Enter Reason" required>
             </div>
             <div class="row">
-                <input type="text" class="col-6 mx-auto" id="reason" placeholder="Enter Reason">
+                <button class="btn btn-primary mt-3 col-3 mx-auto" id="submitBtn">Enter</button>
             </div>
-            <div class="row">
-                <button class="btn btn-primary mt-3 col-3" id="submitBtn">Enter</button>
-            </div>
-        </div>
 
-        <button onclick="closeMenu();">Close</button>
+            <button class="position-absolute rounded btn btn-danger"onclick="closeMenu();" style="top:-5px; right:-5px;">X</button>
+        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"

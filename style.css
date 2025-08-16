@@ -37,4 +37,10 @@ body{
 
 #Entries{
     max-height:500px;
+    scrollbar-width: none;   /* Firefox */
+    -ms-overflow-style: none;/* Internet Explorer/Edge */
+}
+
+#ENTRIES::-webkit-scrollbar {
+    display: none;           /* Chrome, Safari, Opera */
 }

@@ -41,16 +41,25 @@ function closeMenu(){
 
 function createEntry(type){
     console.log("create entry executed");
+    const valueInput = document.getElementById("amount");
+    const reasonInput = document.getElementById("reason");
     
-    let value = Number(document.getElementById("amount").value);
+    let value = Number(valueInput.value);
     checkCurrency();
 
     value /= exchangeRate;
     console.log(value, symbol);
     
-    let reason = String(document.getElementById("reason").value);
-    console.log(reason);
+    let reason = String(reasonInput.value);
 
+    if(isNaN(value) || value <= 0){
+        window.alert("Value cannot be less than 0");
+        return;
+    } else if(reason.length >= 20 || reason.trim() == ""){
+        window.alert("Reason should be less than 15 symbols");
+        return;
+    }
+    console.log(reason);
     console.log(type);
     
     entries.push(new Entry(type, value, reason));
@@ -60,6 +69,10 @@ function createEntry(type){
     
     updateTotal(value, type);
     closeMenu();
+
+    valueInput.value = "";
+    reasonInput.value = "";
+
 }
 
 function loadEntries() {
@@ -132,14 +145,14 @@ function displayEntries() {
                     <h6>Date: ${entryDate.getDate()}.${Number(entryDate.getMonth()) + 1}.${entryDate.getFullYear()}</h6>
                     <h5>Reason: ${entry.reason}</h5>
                     <h5 class="entry-sum">+${symbol}${entryValue.toFixed(2)}</h5>
-                    <button onclick="removeEntry(${index})">Delete</button>
+                    <button class="btn btn-danger p-1 rounded" onclick="removeEntry(${index})">Delete</button>
                 </div>`
             } else if (entry.type === "expense") {
                 html += `<div class="entry col-8 mx-auto bg-light rounded shadow p-3 mt-2">
                     <h6>Date: ${entryDate.getFullYear()}/${entryDate.getMonth()}/${entryDate.getDate()}</h6>
                     <h5>Reason: ${entry.reason}</h5>
                     <h5 class="entry-sum">-${symbol}${entryValue.toFixed(2)}</h5>
-                    <button onclick="removeEntry(${index})">Delete</button>
+                    <button class="btn btn-danger p-1 rounded" onclick="removeEntry(${index})">Delete</button>
                 </div>`
             }
 
@@ -171,4 +184,5 @@ function checkCurrency(){
         symbol = "$";
     }
 }
+
 //code need to be optimised, polish the function about changing the value
