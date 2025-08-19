@@ -10,6 +10,7 @@ const entries = JSON.parse(localStorage.getItem("entries")) || [];
 window.addEventListener("DOMContentLoaded", () => {
     checkCurrency();
     updateTotal(0, "");
+    displayEntries();
 })
 
 const display = document.getElementById("budget-display");
@@ -61,25 +62,22 @@ function createEntry(type){
     }
     console.log(reason);
     console.log(type);
+
+    let date = new Date();
+    date = String(`${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`)
     
-    entries.push(new Entry(type, value, reason));
+    entries.push(new Entry(type, value, reason, date));
     localStorage.setItem("entries", JSON.stringify(entries));
 
     console.log(entries);
     
     updateTotal(value, type);
+    displayEntries();
     closeMenu();
 
     valueInput.value = "";
     reasonInput.value = "";
 
-}
-
-function loadEntries() {
-  return JSON.parse(localStorage.getItem("entries") || "[]", (key, value) => {
-    if (key === "date") return new Date(value); // revive into Date
-    return value;
-  });
 }
 
 function removeEntry(index){
@@ -98,6 +96,7 @@ function removeEntry(index){
     }
 
     updateTotal(removingValue, entryType);
+    displayEntries();
 }
 
 function updateTotal(value, type){
@@ -119,15 +118,14 @@ function updateTotal(value, type){
     const displayMoney = `${symbol}${(money*exchangeRate).toFixed(2)}`
     display.innerHTML = displayMoney;
 
-    displayEntries();
 }
 
 class Entry{
-    constructor(type, value, reason){
+    constructor(type, value, reason, date){
         this.type = type,
         this.value = value,
         this.reason = reason
-        this.date = new Date().toISOString();
+        this.date = date;
     }
 }
 
@@ -135,21 +133,21 @@ function displayEntries() {
     let index = 0;
     const entryDisplay = document.querySelector("#Entries");
     let html = "";
-    const displayingEntries = loadEntries();
-    if (displayingEntries) {
-        displayingEntries.forEach(entry => {
+    const displayingEntries = true;
+    if (entries) {
+        entries.forEach(entry => {
             const entryValue = entry.value * exchangeRate;
             const entryDate = entry.date;
             if (entry.type === "add") {
                 html += `<div class="entry col-8 mx-auto bg-light rounded shadow p-3 mt-2">
-                    <h6>Date: ${entryDate.getDate()}.${Number(entryDate.getMonth()) + 1}.${entryDate.getFullYear()}</h6>
+                    <h6>Date: ${entryDate}</h6>
                     <h5>Reason: ${entry.reason}</h5>
                     <h5 class="entry-sum">+${symbol}${entryValue.toFixed(2)}</h5>
                     <button class="btn btn-danger p-1 rounded" onclick="removeEntry(${index})">Delete</button>
                 </div>`
             } else if (entry.type === "expense") {
                 html += `<div class="entry col-8 mx-auto bg-light rounded shadow p-3 mt-2">
-                    <h6>Date: ${entryDate.getFullYear()}/${entryDate.getMonth()}/${entryDate.getDate()}</h6>
+                    <h6>Date: ${entryDate}</h6>
                     <h5>Reason: ${entry.reason}</h5>
                     <h5 class="entry-sum">-${symbol}${entryValue.toFixed(2)}</h5>
                     <button class="btn btn-danger p-1 rounded" onclick="removeEntry(${index})">Delete</button>
@@ -173,6 +171,7 @@ function changeCurrency(){
     localStorage.setItem("currentCurrency", currentCurrency);
     checkCurrency();
     updateTotal(0, "");
+    displayEntries();
 }
 
 function checkCurrency(){
@@ -183,6 +182,34 @@ function checkCurrency(){
         exchangeRate = 1;
         symbol = "$";
     }
+}
+
+function filterEntries(filter){
+    checkCurrency();
+    let index = 0;
+    const entryDisplay = document.querySelector("#Entries");
+    let html = "";
+    for(let i = 0; i<= entries.length - 1; i++){
+        if(filter==="expense" && entries[i].type ==="expense"){
+            html+=`<div class="entry col-8 mx-auto bg-light rounded shadow p-3 mt-2">
+                    <h6>Date: ${entries[i].date}</h6>
+                    <h5>Reason: ${entries[i].reason}</h5>
+                    <h5 class="entry-sum">-${symbol}${(entries[i].value*exchangeRate).toFixed(2)}</h5>
+                    <button class="btn btn-danger p-1 rounded" onclick="removeEntry(${index})">Delete</button>
+                </div>`
+        } else if(filter==="add" && entries[i].type ==="add"){
+            html+=`<div class="entry col-8 mx-auto bg-light rounded shadow p-3 mt-2">
+                    <h6>Date: ${entries[i].date}</h6>
+                    <h5>Reason: ${entries[i].reason}</h5>
+                    <h5 class="entry-sum">+${symbol}${(entries[i].value*exchangeRate).toFixed(2)}</h5>
+                    <button class="btn btn-danger p-1 rounded" onclick="removeEntry(${index})">Delete</button>
+                </div>`
+        }
+
+        index++;
+    }
+
+    entryDisplay.innerHTML = html;
 }
 
 //code need to be optimised, polish the function about changing the value
