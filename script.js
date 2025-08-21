@@ -5,12 +5,13 @@ console.log(money);
 let currentCurrency = localStorage.getItem("currentCurrency") || "dollar";
 let symbol = "$";
 let exchangeRate = 1;
+let filter = "none";
 const entries = JSON.parse(localStorage.getItem("entries")) || [];
 
 window.addEventListener("DOMContentLoaded", () => {
     checkCurrency();
     updateTotal(0, "");
-    displayEntries();
+    displayEntries(filter);
 })
 
 const display = document.getElementById("budget-display");
@@ -71,8 +72,9 @@ function createEntry(type){
 
     console.log(entries);
     
+    filter = "none";
     updateTotal(value, type);
-    displayEntries();
+    displayEntries(filter);
     closeMenu();
 
     valueInput.value = "";
@@ -96,7 +98,7 @@ function removeEntry(index){
     }
 
     updateTotal(removingValue, entryType);
-    displayEntries();
+    displayEntries(filter);
 }
 
 function updateTotal(value, type){
@@ -125,40 +127,53 @@ class Entry{
         this.type = type,
         this.value = value,
         this.reason = reason
-        this.date = date;
+        this.date = date,
+        this.typeSymbol 
+        if(type === "add"){
+            this.typeSymbol = "+"
+        } else{
+            this.typeSymbol = "-"
+        }
     }
 }
 
-function displayEntries() {
+function displayEntries(filter) {
     let index = 0;
-    const entryDisplay = document.querySelector("#Entries");
     let html = "";
-    const displayingEntries = true;
-    if (entries) {
-        entries.forEach(entry => {
+    const entriesDisplay = document.getElementById("Entries");
+    if(filter === "none"){
+         entries.forEach(entry => {
             const entryValue = entry.value * exchangeRate;
             const entryDate = entry.date;
-            if (entry.type === "add") {
-                html += `<div class="entry col-8 mx-auto bg-light rounded shadow p-3 mt-2">
+            const typeSymbol = entry.typeSymbol;
+            html += `<div class="entry col-8 mx-auto bg-light rounded shadow p-3 mt-2">
                     <h6>Date: ${entryDate}</h6>
                     <h5>Reason: ${entry.reason}</h5>
-                    <h5 class="entry-sum">+${symbol}${entryValue.toFixed(2)}</h5>
+                    <h5 class="entry-sum">${typeSymbol}${symbol}${entryValue.toFixed(2)}</h5>
                     <button class="btn btn-danger p-1 rounded" onclick="removeEntry(${index})">Delete</button>
                 </div>`
-            } else if (entry.type === "expense") {
-                html += `<div class="entry col-8 mx-auto bg-light rounded shadow p-3 mt-2">
-                    <h6>Date: ${entryDate}</h6>
-                    <h5>Reason: ${entry.reason}</h5>
-                    <h5 class="entry-sum">-${symbol}${entryValue.toFixed(2)}</h5>
-                    <button class="btn btn-danger p-1 rounded" onclick="removeEntry(${index})">Delete</button>
-                </div>`
-            }
 
             index++;
         })
-        entryDisplay.innerHTML = html;
-        console.log("index ", index);
+    } else{
+        entries.forEach(entry => {
+            if(entry.type === filter){
+            const entryValue = entry.value * exchangeRate;
+            const entryDate = entry.date;
+            const typeSymbol = entry.typeSymbol;
+            html += `<div class="entry col-8 mx-auto bg-light rounded shadow p-3 mt-2">
+                    <h6>Date: ${entryDate}</h6>
+                    <h5>Reason: ${entry.reason}</h5>
+                    <h5 class="entry-sum">${typeSymbol}${symbol}${entryValue.toFixed(2)}</h5>
+                    <button class="btn btn-danger p-1 rounded" onclick="removeEntry(${index})">Delete</button>
+                </div>`;
+            }
+            
+            index++;
+        });
     }
+
+    entriesDisplay.innerHTML = html;
 }
 
 function changeCurrency(){
@@ -171,7 +186,7 @@ function changeCurrency(){
     localStorage.setItem("currentCurrency", currentCurrency);
     checkCurrency();
     updateTotal(0, "");
-    displayEntries();
+    displayEntries(filter);
 }
 
 function checkCurrency(){
@@ -211,5 +226,17 @@ function filterEntries(filter){
 
     entryDisplay.innerHTML = html;
 }
+
+const filterBtns = document.querySelectorAll("#filterBtn");
+
+filterBtns.forEach(button =>{
+    button.addEventListener("click", () =>{
+        filter = button.getAttribute("filter");
+        displayEntries(filter);
+    })
+})
+
+
+
 
 //code need to be optimised, polish the function about changing the value
