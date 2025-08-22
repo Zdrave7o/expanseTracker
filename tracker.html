@@ -46,10 +46,12 @@
         <div class="container-fluid">
             <div class="row mx-auto px-3 d-flex justify-content-center">
                 <div class="col-md-3 mt-2">
-                    <button class="btn btn-primary col-12" id="add-money" onclick="openEntryMenu(`add`);">Add Money</button>
+                    <button class="btn btn-primary col-12" id="add-money" onclick="openEntryMenu(`add`);">Add
+                        Money</button>
                 </div>
                 <div class="col-md-3 mt-2">
-                    <button class="btn btn-primary col-12" id="add-expense" onclick="openEntryMenu(`expense`);">Add Expense</button>
+                    <button class="btn btn-primary col-12" id="add-expense" onclick="openEntryMenu(`expense`);">Add
+                        Expense</button>
                 </div>
             </div>
         </div>
@@ -58,20 +60,40 @@
             <div class="row text-center">
                 <h3>Entries: </h3>
             </div>
-            <div id="Entries" class="row overflow-y-scroll py-3">
+            <div class="container">
+                <div class="row">
+                    <div class="col-3">
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Filters
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" id="changeCurrencyBtn" onclick="changeCurrency();">Change
+                                    Currency</a>
+                                <a class="dropdown-item" id="filterBtn" filter="expense">Filter Expanses</a>
+                                <a class="dropdown-item" id="filterBtn" filter="add">Filter Adds</a>
+                                <a class="dropdown-item" id="filterBtn" filter="none">Clear Filter</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" id="date-filter-button" onclick="toggleDateFilter()">Find By
+                                    Date</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-9 text-end">
+                        <p class="ps-1" id="currentFilter"></p>
+                    </div>
+                </div>
+            </div>
+            <div id="Entries" class="container overflow-y-scroll py-3">
             </div>
         </div>
-        <button class="btn btn-primary p-1" id="changeCurrencyBtn" onclick="changeCurrency();">Change Currency</button>
-        <button class="btn btn-primary p-1" id="filterBtn" filter="expense">Filter Expanses</button>
-        <button class="btn btn-primary p-1" id="filterBtn" filter="add">Filter Adds</button>
-        <button class="btn btn-primary p-1" id="filterBtn" filter="none">Clear Filter</button>
-        <button class="btn btn-primary p-1" id="date-filter-button" onclick="toggleDateFilter()">Find By Date</button>
     </main>
-
     <div class="container-fluid entry-menu menu position-absolute d-none justify-content-center align-items-center">
         <div class="col-10 col-md-6 bg-light entry-creator p-1 rounded position-relative">
             <div class="row mt-2">
-                <input type="number" name="amount" class="col-6 mx-auto" id="amount" placeholder="Enter Amount" required>
+                <input type="number" name="amount" class="col-6 mx-auto" id="amount" placeholder="Enter Amount"
+                    required>
             </div>
             <div class="row mt-2">
                 <input type="text" name="reason" class="col-6 mx-auto" id="reason" placeholder="Enter Reason" required>
@@ -80,21 +102,24 @@
                 <button class="btn btn-primary mt-3 col-3 mx-auto" id="submitBtn">Enter</button>
             </div>
 
-            <button class="position-absolute rounded btn btn-danger"onclick="closeMenu();" style="top:-5px; right:-5px;">X</button>
+            <button class="position-absolute rounded btn btn-danger" onclick="closeMenu();"
+                style="top:-5px; right:-5px;">X</button>
         </div>
     </div>
 
-    <div class="container-fluid date-filter-menu menu position-absolute d-none justify-content-center align-items-center">
+    <div
+        class="container-fluid date-filter-menu menu position-absolute d-none justify-content-center align-items-center">
         <div class="col-10 col-md-6 bg-light entry-creator p-1 rounded position-relative">
             <div class="row mt-2">
                 <input type="text" name="amount" class="col-6 mx-auto" id="start-date" placeholder="YY/MM/DD" required>
             </div>
-    
+
             <div class="row">
                 <button class="btn btn-primary mt-3 col-3 mx-auto" id="filterDatesBtn">Enter</button>
             </div>
 
-            <button class="position-absolute rounded btn btn-danger" onclick="toggleDateFilter();" style="top:-5px; right:-5px;">X</button>
+            <button class="position-absolute rounded btn btn-danger" onclick="toggleDateFilter();"
+                style="top:-5px; right:-5px;">X</button>
         </div>
     </div>
 

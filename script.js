@@ -8,10 +8,10 @@ let exchangeRate = 1;
 let filter = "none";
 let dateFilter = "none";
 const entries = JSON.parse(localStorage.getItem("entries")) || [];
-
-let filteredEntries = entries;
+let filterDisplay = document.getElementById("currentFilter");
 
 window.addEventListener("DOMContentLoaded", () => {
+    filterDisplay.textContent = `Current Filter: ${filter}`;
     checkCurrency();
     updateTotal(0, "");
     displayEntries(filter, entries);
@@ -71,7 +71,7 @@ function createEntry(type){
     console.log(type);
 
     let date = new Date();
-    date = String(`${date.getFullYear()}/${date.getMonth() + 2}/${date.getDate()}`)
+    date = String(`${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`)
     
     entries.push(new Entry(type, value, reason, date));
     localStorage.setItem("entries", JSON.stringify(entries));
@@ -144,6 +144,8 @@ class Entry{
 }
 
 function displayEntries(filter, entryArr) {
+    filterDisplay.textContent = `Current Filter: ${filter}`;
+    
     let index = 0;
     let html = "";
     const entriesDisplay = document.getElementById("Entries");
@@ -152,7 +154,7 @@ function displayEntries(filter, entryArr) {
             const entryValue = entry.value * exchangeRate;
             const entryDate = entry.date;
             const typeSymbol = entry.typeSymbol;
-            html += `<div class="entry col-8 mx-auto bg-light rounded shadow p-3 mt-2">
+            html += `<div class="entry col-12 mx-auto bg-light rounded shadow p-3 mt-2">
                     <h6>Date: ${entryDate}</h6>
                     <h5>Reason: ${entry.reason}</h5>
                     <h5 class="entry-sum">${typeSymbol}${symbol}${entryValue.toFixed(2)}</h5>
@@ -167,7 +169,7 @@ function displayEntries(filter, entryArr) {
             const entryValue = entry.value * exchangeRate;
             const entryDate = entry.date;
             const typeSymbol = entry.typeSymbol;
-            html += `<div class="entry col-8 mx-auto bg-light rounded shadow p-3 mt-2">
+            html += `<div class="entry col-12 mx-auto bg-light rounded shadow p-3 mt-2">
                     <h6>Date: ${entryDate}</h6>
                     <h5>Reason: ${entry.reason}</h5>
                     <h5 class="entry-sum">${typeSymbol}${symbol}${entryValue.toFixed(2)}</h5>
@@ -229,9 +231,12 @@ const filterDatesBtn = document.getElementById("filterDatesBtn");
 
 filterDatesBtn.addEventListener("click", function(){
     filterDate(entries);
+    toggleDateFilter();
 })
 
 function filterDate(entriesArr){
+    filterDisplay.textContent = `Current Filter: ${filter}`;
+    
     let filterDate = String(document.getElementById("start-date").value);
     filterDate = filterDate.replaceAll(".", "/").trim();
     
@@ -242,7 +247,7 @@ function filterDate(entriesArr){
         if(entryDate.includes(filterDate)){
             const entryValue = entry.value * exchangeRate;
             const typeSymbol = entry.typeSymbol;
-            html += `<div class="entry col-8 mx-auto bg-light rounded shadow p-3 mt-2">
+            html += `<div class="entry col-12 mx-auto bg-light rounded shadow p-3 mt-2">
                     <h6>Date: ${entryDate}</h6>
                     <h5>Reason: ${entry.reason}</h5>
                     <h5 class="entry-sum">${typeSymbol}${symbol}${entryValue.toFixed(2)}</h5>
