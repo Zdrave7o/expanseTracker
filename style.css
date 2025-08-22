@@ -44,3 +44,11 @@ body{
 #ENTRIES::-webkit-scrollbar {
     display: none;           /* Chrome, Safari, Opera */
 }
+
+.date-filter-menu{
+    top:0;
+    width:100%;
+    min-height: 100vh;
+    background-color: hsla(0, 0%, 0%, 0.263);
+    z-index: 5;
+}

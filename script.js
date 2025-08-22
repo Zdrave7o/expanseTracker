@@ -8,6 +8,8 @@ let exchangeRate = 1;
 let filter = "none";
 const entries = JSON.parse(localStorage.getItem("entries")) || [];
 
+let filteredEntries = entries;
+
 window.addEventListener("DOMContentLoaded", () => {
     checkCurrency();
     updateTotal(0, "");
@@ -35,10 +37,13 @@ function openEntryMenu(type){
 }
 
 function closeMenu(){
-    const entryMenu = document.querySelector(".entry-menu");
+    const menus = document.querySelectorAll(".menu");
 
-    entryMenu.classList.remove("d-flex");
-    entryMenu.classList.add("d-none");
+    for(let i = 0; i <= menus.length - 1; i++){
+        const currentMenu = menus[i];
+        currentMenu.classList.remove("d-flex");
+        currentMenu.classList.add("d-none");
+    }
 }
 
 function createEntry(type){
@@ -199,34 +204,6 @@ function checkCurrency(){
     }
 }
 
-function filterEntries(filter){
-    checkCurrency();
-    let index = 0;
-    const entryDisplay = document.querySelector("#Entries");
-    let html = "";
-    for(let i = 0; i<= entries.length - 1; i++){
-        if(filter==="expense" && entries[i].type ==="expense"){
-            html+=`<div class="entry col-8 mx-auto bg-light rounded shadow p-3 mt-2">
-                    <h6>Date: ${entries[i].date}</h6>
-                    <h5>Reason: ${entries[i].reason}</h5>
-                    <h5 class="entry-sum">-${symbol}${(entries[i].value*exchangeRate).toFixed(2)}</h5>
-                    <button class="btn btn-danger p-1 rounded" onclick="removeEntry(${index})">Delete</button>
-                </div>`
-        } else if(filter==="add" && entries[i].type ==="add"){
-            html+=`<div class="entry col-8 mx-auto bg-light rounded shadow p-3 mt-2">
-                    <h6>Date: ${entries[i].date}</h6>
-                    <h5>Reason: ${entries[i].reason}</h5>
-                    <h5 class="entry-sum">+${symbol}${(entries[i].value*exchangeRate).toFixed(2)}</h5>
-                    <button class="btn btn-danger p-1 rounded" onclick="removeEntry(${index})">Delete</button>
-                </div>`
-        }
-
-        index++;
-    }
-
-    entryDisplay.innerHTML = html;
-}
-
 const filterBtns = document.querySelectorAll("#filterBtn");
 
 filterBtns.forEach(button =>{
@@ -236,6 +213,16 @@ filterBtns.forEach(button =>{
     })
 })
 
+function toggleDateFilter(){
+    const dateFilterMenu = document.querySelector(".date-filter-menu");
+    if(dateFilterMenu.classList.contains("d-none")){
+        dateFilterMenu.classList.remove("d-none");
+        dateFilterMenu.classList.add("d-flex");
+    } else{
+         dateFilterMenu.classList.remove("d-flex");
+         dateFilterMenu.classList.add("d-none");
+    }
+}
 
 
 

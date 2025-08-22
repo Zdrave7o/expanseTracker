@@ -65,9 +65,10 @@
         <button class="btn btn-primary p-1" id="filterBtn" filter="expense">Filter Expanses</button>
         <button class="btn btn-primary p-1" id="filterBtn" filter="add">Filter Adds</button>
         <button class="btn btn-primary p-1" id="filterBtn" filter="none">Clear Filter</button>
+        <button class="btn btn-primary p-1" id="date-filter-button" onclick="toggleDateFilter()">Filter By Date</button>
     </main>
 
-    <div class="container-fluid entry-menu position-absolute d-none justify-content-center align-items-center">
+    <div class="container-fluid entry-menu menu position-absolute d-none justify-content-center align-items-center">
         <div class="col-10 col-md-6 bg-light entry-creator p-1 rounded position-relative">
             <div class="row mt-2">
                 <input type="number" name="amount" class="col-6 mx-auto" id="amount" placeholder="Enter Amount" required>
@@ -80,6 +81,22 @@
             </div>
 
             <button class="position-absolute rounded btn btn-danger"onclick="closeMenu();" style="top:-5px; right:-5px;">X</button>
+        </div>
+    </div>
+
+    <div class="container-fluid date-filter-menu menu position-absolute d-none justify-content-center align-items-center">
+        <div class="col-10 col-md-6 bg-light entry-creator p-1 rounded position-relative">
+            <div class="row mt-2">
+                <input type="text" name="amount" class="col-6 mx-auto" id="start-date" placeholder="YY/MM/DD" required>
+            </div>
+            <div class="row mt-2">
+                <input type="text" name="reason" class="col-6 mx-auto" id="end-date" placeholder="YY/MM/DD" required>
+            </div>
+            <div class="row">
+                <button class="btn btn-primary mt-3 col-3 mx-auto" id="filterDatesBtn" onclick="displayEntries('date');">Enter</button>
+            </div>
+
+            <button class="position-absolute rounded btn btn-danger" onclick="toggleDateFilter();" style="top:-5px; right:-5px;">X</button>
         </div>
     </div>
 
