@@ -6,6 +6,7 @@ let currentCurrency = localStorage.getItem("currentCurrency") || "dollar";
 let symbol = "$";
 let exchangeRate = 1;
 let filter = "none";
+let dateFilter = "none";
 const entries = JSON.parse(localStorage.getItem("entries")) || [];
 
 let filteredEntries = entries;
@@ -13,7 +14,7 @@ let filteredEntries = entries;
 window.addEventListener("DOMContentLoaded", () => {
     checkCurrency();
     updateTotal(0, "");
-    displayEntries(filter);
+    displayEntries(filter, entries);
 })
 
 const display = document.getElementById("budget-display");
@@ -70,7 +71,7 @@ function createEntry(type){
     console.log(type);
 
     let date = new Date();
-    date = String(`${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`)
+    date = String(`${date.getFullYear()}/${date.getMonth() + 2}/${date.getDate()}`)
     
     entries.push(new Entry(type, value, reason, date));
     localStorage.setItem("entries", JSON.stringify(entries));
@@ -79,7 +80,7 @@ function createEntry(type){
     
     filter = "none";
     updateTotal(value, type);
-    displayEntries(filter);
+    displayEntries(filter, entries);
     closeMenu();
 
     valueInput.value = "";
@@ -103,7 +104,7 @@ function removeEntry(index){
     }
 
     updateTotal(removingValue, entryType);
-    displayEntries(filter);
+    displayEntries(filter, entries);
 }
 
 function updateTotal(value, type){
@@ -142,12 +143,12 @@ class Entry{
     }
 }
 
-function displayEntries(filter) {
+function displayEntries(filter, entryArr) {
     let index = 0;
     let html = "";
     const entriesDisplay = document.getElementById("Entries");
     if(filter === "none"){
-         entries.forEach(entry => {
+         entryArr.forEach(entry => {
             const entryValue = entry.value * exchangeRate;
             const entryDate = entry.date;
             const typeSymbol = entry.typeSymbol;
@@ -161,7 +162,7 @@ function displayEntries(filter) {
             index++;
         })
     } else{
-        entries.forEach(entry => {
+        entryArr.forEach(entry => {
             if(entry.type === filter){
             const entryValue = entry.value * exchangeRate;
             const entryDate = entry.date;
@@ -191,7 +192,7 @@ function changeCurrency(){
     localStorage.setItem("currentCurrency", currentCurrency);
     checkCurrency();
     updateTotal(0, "");
-    displayEntries(filter);
+    displayEntries(filter, entries);
 }
 
 function checkCurrency(){
@@ -209,7 +210,7 @@ const filterBtns = document.querySelectorAll("#filterBtn");
 filterBtns.forEach(button =>{
     button.addEventListener("click", () =>{
         filter = button.getAttribute("filter");
-        displayEntries(filter);
+        displayEntries(filter, entries);
     })
 })
 
@@ -222,6 +223,38 @@ function toggleDateFilter(){
          dateFilterMenu.classList.remove("d-flex");
          dateFilterMenu.classList.add("d-none");
     }
+}
+
+const filterDatesBtn = document.getElementById("filterDatesBtn");
+
+filterDatesBtn.addEventListener("click", function(){
+    filterDate(entries);
+})
+
+function filterDate(entriesArr){
+    let filterDate = String(document.getElementById("start-date").value);
+    filterDate = filterDate.replaceAll(".", "/").trim();
+    
+    let index = 0;
+    let html = "";
+    entriesArr.forEach(entry =>{
+        const entryDate = String(entry.date);
+        if(entryDate.includes(filterDate)){
+            const entryValue = entry.value * exchangeRate;
+            const typeSymbol = entry.typeSymbol;
+            html += `<div class="entry col-8 mx-auto bg-light rounded shadow p-3 mt-2">
+                    <h6>Date: ${entryDate}</h6>
+                    <h5>Reason: ${entry.reason}</h5>
+                    <h5 class="entry-sum">${typeSymbol}${symbol}${entryValue.toFixed(2)}</h5>
+                    <button class="btn btn-danger p-1 rounded" onclick="removeEntry(${index})">Delete</button>
+                </div>`;
+        }
+
+        index++;
+    })
+
+    const entriesDisplay = document.getElementById("Entries");
+    entriesDisplay.innerHTML = html;
 }
 
 
