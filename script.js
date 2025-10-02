@@ -15,6 +15,7 @@ window.addEventListener("DOMContentLoaded", () => {
     checkCurrency();
     updateTotal(0, "");
     displayEntries(filter, entries);
+    
 })
 
 const display = document.getElementById("budget-display");
@@ -159,6 +160,7 @@ function displayEntries(filter, entryArr) {
                     <h5>Reason: ${entry.reason}</h5>
                     <h5 class="entry-sum">${typeSymbol}${symbol}${entryValue.toFixed(2)}</h5>
                     <button class="btn btn-danger p-1 rounded" onclick="removeEntry(${index})">Delete</button>
+                    <button class="btn btn-primary p-1 rounded" onclick="edit(${index})">Edit</button>
                 </div>`
 
             index++;
@@ -173,7 +175,8 @@ function displayEntries(filter, entryArr) {
                     <h6>Date: ${entryDate}</h6>
                     <h5>Reason: ${entry.reason}</h5>
                     <h5 class="entry-sum">${typeSymbol}${symbol}${entryValue.toFixed(2)}</h5>
-                    <button class="btn btn-danger p-1 rounded" onclick="removeEntry(${index})">Delete</button>
+                    <button class="btn btn-danger p-1 rounded" onclick="removeEntry(${index})">Delete</button>'
+                    <button class="btn btn-primary p-1 rounded" onclick="edit(${index})">Edit</button>
                 </div>`;
             }
             
@@ -252,6 +255,7 @@ function filterDate(entriesArr){
                     <h5>Reason: ${entry.reason}</h5>
                     <h5 class="entry-sum">${typeSymbol}${symbol}${entryValue.toFixed(2)}</h5>
                     <button class="btn btn-danger p-1 rounded" onclick="removeEntry(${index})">Delete</button>
+                    <button class="btn btn-primary p-1 rounded" onclick="edit(${index})">Edit</button>
                 </div>`;
         }
 
@@ -261,6 +265,19 @@ function filterDate(entriesArr){
     const entriesDisplay = document.getElementById("Entries");
     entriesDisplay.innerHTML = html;
 }
+
+function edit(index){
+    const currentEntry = entries[index];
+    console.log(`Editing entry with value: ${currentEntry.value} dollars`);
+    
+
+
+}
+
+function openEditMenu(){
+    
+}
+
 
 
 
