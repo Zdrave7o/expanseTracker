@@ -62,10 +62,10 @@ function createEntry(type){
     let reason = String(reasonInput.value);
 
     if(isNaN(value) || value <= 0){
-        window.alert("Value cannot be less than 0");
+        window.alert("Value cannot be less than 1");
         return;
     } else if(reason.length >= 20 || reason.trim() == ""){
-        window.alert("Reason should be less than 15 symbols");
+        window.alert("Reason should be less than 15 symbols and more than 0 symbols");
         return;
     }
     console.log(reason);
